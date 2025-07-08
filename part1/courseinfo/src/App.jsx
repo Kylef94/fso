@@ -2,6 +2,24 @@ const Header = ({course}) => {
   return <h1>{course}</h1>
 }
 
+const Part = ({partnum, exercise}) => {
+  return  <p>
+    {partnum} {exercise}
+  </p>
+}
+
+const Content = ({part1, exercises1, part2, exercises2, part3, exercises3}) => {
+ return <div>
+    <Part partnum={part1} excercise={exercises1} />
+    <Part partnum={part2} excercise={exercises2} />
+    <Part partnum={part3} excercise={exercises3} />
+  </div>
+}
+
+const Total = ({exercises1, exercises2, exercises3,}) => {
+  return <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+}
+
 const App = () => {
   const course = 'Half Stack application development'
   const part1 = 'Fundamentals of React'
@@ -14,16 +32,11 @@ const App = () => {
   return (
     <div>
       <Header course={course}/>
-      <p>
-        {part1} {exercises1}
-      </p>
-      <p>
-        {part2} {exercises2}
-      </p>
-      <p>
-        {part3} {exercises3}
-      </p>
-      <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+      <Content part1={part1} exercises1={exercises1} 
+      part2={part2} exercises2={exercises2} part3={part3} 
+      exercises3={exercises3} />
+      <Total  exercises1={exercises1} exercises2={exercises2} 
+      exercises3={exercises3} />
     </div>
   )
 }
