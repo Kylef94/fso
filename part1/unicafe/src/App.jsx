@@ -11,12 +11,21 @@ const FeedbackInput = ({goodClick, neutralClick, badClick}) => {
 }
 
 const Statistics = ({goodStat, neutralStat, badStat}) => {
+  let total = goodStat + neutralStat + badStat;
+  let average = (( goodStat + (-1 * badStat)) / total);
+  let positive = goodStat / total *100 ;
+
+  if (total === 0) {
+    return <div className="statistics">No Feedback given</div>
+  }
   return (
     <div className="statistics">
       <h1>Statistics</h1>
       <p>good {goodStat}</p>
       <p>neutral {neutralStat}</p>
       <p>bad {badStat}</p>
+      <p>average {average}</p>
+      <p>positive {positive}%</p>
     </div>
   )
 }
