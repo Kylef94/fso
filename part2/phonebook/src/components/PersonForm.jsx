@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const PersonForm = ({persons, setPersons}) => {
+const PersonForm = ({newContact}) => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
 
@@ -12,18 +12,10 @@ const PersonForm = ({persons, setPersons}) => {
     setNewNumber(e.target.value)
   }
 
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (persons.find(person => person.name == newName)) {
-      alert(`${newName} is already in the phonebook!`)
-    }
-    else {
-      setPersons(persons.concat({
-        name: newName, 
-        number: newNumber,
-        id: persons.length + 1
-      }))
-    }
+    newContact(newName, newNumber)
     setNewName('')
     setNewNumber('')
   }
