@@ -18,8 +18,9 @@ const App = () => {
   }, [])
 
   const newContact = (newName, newNumber) => {
-    if (persons.find(person => person.name == newName)) {
-      alert(`${newName} is already in the phonebook!`)
+    const existingContact = persons.find(person => person.name == newName)
+    if (existingContact) {
+      updateNumber(existingContact, newNumber)
     }
     else {
       const newContact = {name: newName, 
@@ -34,7 +35,22 @@ const App = () => {
   const removeContact = (contact) => {
     if (window.confirm(`Are you sure you want to delete ${contact.name}`)) {
       ContactService.remove(contact.id)
-      setPersons(persons.filter(person => person.id != contact.id))
+      setPersons(persons.filter(person => person.id !== contact.id))
+    }
+    else {
+      alert(`${contact.name} not deleted.`)
+    }
+  }
+
+  const updateNumber = (contact, newNumber) => {
+    if (window.confirm(`${contact.name} is already added to the phonebook, replace the old 
+                        number with a new one?`)) {
+      const updatedContact = {...contact, number: newNumber}
+      ContactService.update(contact.id, updatedContact)
+      .then(updatedPerson => setPersons(persons.map(person => person.id === contact.id ? updatedPerson : person)))
+    }
+    else {
+      alert(`${contact.name} not deleted.`)
     }
   }
   

@@ -12,8 +12,8 @@ const create = newContact => {
     return request.then(resp => resp.data)
 }
 
-const update = (id, contact) => {
-    const request = axios.put(`${baseUrl}/${id}`, contact)
+const update = (id, updatedContact) => {
+    const request = axios.put(`${baseUrl}/${id}`, updatedContact)
     return request.then(resp => resp.data)
 }
 
