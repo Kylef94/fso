@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 import ContactList from './components/ContactList.jsx'
 import FilterForm from './components/FilterForm.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import ContactService from './services/ContactService.js'
-import Notification from './components/Notification.jsx'
-import ErrorMessage from './components/ErrorMessage.jsx'
-
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [search, setSearch] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [notification, setNotification] = useState(null)
-
+  
   useEffect(() => {
     ContactService.getAll()
     .then(contacts => {
@@ -31,10 +27,7 @@ const App = () => {
                           number: newNumber}
       
       ContactService.create(newContact)
-      .then(contact => {
-        setPersons(persons.concat(contact))
-        newNotification(`${contact.name} was added to the phonebook!`)
-      })
+      .then(contact => setPersons(persons.concat(contact)))
       
     }
   }
@@ -42,16 +35,10 @@ const App = () => {
   const removeContact = (contact) => {
     if (window.confirm(`Are you sure you want to delete ${contact.name}`)) {
       ContactService.remove(contact.id)
-      .then(() =>{
-        setPersons(persons.filter(person => person.id !== contact.id))
-        newNotification(`${contact.name} was deleted from phonebook`)
-      })
-      .catch(error => {
-        newErrorMessage(`${contact.name} was already removed from the server!`)
-      })
+      setPersons(persons.filter(person => person.id !== contact.id))
     }
     else {
-      newNotification(`${contact.name} not deleted`)
+      alert(`${contact.name} not deleted.`)
     }
   }
 
@@ -60,38 +47,16 @@ const App = () => {
                         number with a new one?`)) {
       const updatedContact = {...contact, number: newNumber}
       ContactService.update(contact.id, updatedContact)
-      .then(updatedPerson => {
-        setPersons(persons.map(person => person.id === contact.id ? updatedPerson : person)
-        
-      )})
-      .catch(error => {
-        newErrorMessage(`${contact.name} was already removed from the server!`)
-      })
+      .then(updatedPerson => setPersons(persons.map(person => person.id === contact.id ? updatedPerson : person)))
     }
     else {
-      newNotification(`${contact.name} was not updated!`)
+      alert(`${contact.name} not deleted.`)
     }
   }
-
-  const newNotification = message => {
-    setNotification(message)
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
-  }
-
-  const newErrorMessage = message => {
-    setErrorMessage(message)
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-  }
-
+  
   return (
     <div>
       <h2>Phonebook</h2>
-      <ErrorMessage message={errorMessage}/>
-      <Notification message={notification}/>
       <FilterForm search={search} setSearch={setSearch}/>
       <h3>Add new contact</h3>
       <PersonForm newContact={newContact}/>
