@@ -19,6 +19,7 @@ function App() {
     axios.get(allCountriesUrl)
       .then(response => response.data)
       .then(data => {
+          console.log(data[0])
           const countries = data.map(country => {
             const info = {
             name: country.name.common,
@@ -26,6 +27,7 @@ function App() {
             capital: country.capital,
             languages: country.languages,
             flag: country.flags,
+            latlng: country.capitalInfo.latlng
             }
             return info
           })

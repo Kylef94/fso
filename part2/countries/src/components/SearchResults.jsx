@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import CountrySummary from './CountrySummary'
-import Result from './Result'
+import Weather from './Weather'
 
 const SearchResults = ({countryData, search}) => {
     const [countryFilter, setCountryFilter] = useState([])
@@ -34,7 +34,6 @@ const SearchResults = ({countryData, search}) => {
         return <CountrySummary country={country} />
         }
     else {
-        console.log(countryFilter)
         return (
         <div>
             {countryFilter.map((country) => {
